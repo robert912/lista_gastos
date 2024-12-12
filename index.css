@@ -1,0 +1,112 @@
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/*button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}*/
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#listaGastos li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gasto-info {
+    flex-grow: 1;
+}
+
+.gasto-acciones {
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    #listaGastos li {
+        display: block; /* Cambia a disposición vertical */
+        align-items: flex-start; /* Alinea los elementos al inicio */
+    }
+
+    .gasto-info, .gasto-acciones {
+        width: 100%; /* Los elementos ocuparán todo el ancho */
+    }
+}
+
+.btn-editar, .btn-eliminar {
+    padding: 5px 10px;
+}
+
+.pagado {
+    text-decoration: line-through;
+    color: #6c757d;
+}

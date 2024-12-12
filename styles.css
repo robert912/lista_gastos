@@ -1,0 +1,420 @@
+:root {
+    /* Colors */
+    --color-default: #FFF;
+    --color-black: #000;
+    /* Main Colors */
+    --color-primary: #0D99FF;
+    --color-secondary: #2C2C2C;
+    --color-success: #3AC977;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-cobre: #f27300;
+    --color-orange:#ff9900;
+    --color-blue: #007bff;
+    --color-indigo: #6610f2;
+    --color-purple: #6f42c1;
+    --color-pink: #e83e8c;
+    --color-black: #000;
+    /* Dark Variants */
+    --color-primary-dark: #0c8fec;
+    --color-secondary-dark: #222222;
+    --color-success-dark: #2dac64;
+    --color-info-dark: #148a9c;
+    --color-warning-dark: #e2ab06;
+    --color-danger-dark: #bb2e3c;
+    --color-cobre-dark: #d46701;
+    --color-orange-dark:#dd8500;
+    --color-blue-dark: #006adb;
+    --color-indigo-dark: #550bcc;
+    --color-purple-dark: #5f3aa3;
+    --color-pink-dark: #ca3279;
+    /* RGB Values */
+    --color-primary-rgb: 13, 153, 255;
+    --color-secondary-rgb: 57, 64, 73;
+    --color-success-rgb: 58, 201, 119;
+    --color-info-rgb: 23, 162, 184;
+    --color-warning-rgb: 255, 193, 7;
+    --color-danger-rgb: 220, 53, 69;
+    --color-cobre-rgb: 242, 115, 0;
+    --color-orange-rgb: 255, 153, 0;
+    --color-blue-rgb: 0, 123, 255;
+    --color-indigo-rgb: 102, 16, 242;
+    --color-purple-rgb: 111, 66, 193;
+    --color-pink-rgb: 232, 62, 140;
+    /* Spacing */
+    --spacing-0: 0;
+    --spacing-1: 5px;
+    --spacing-2: 10px;
+    --spacing-3: 15px;
+    --spacing-4: 20px;
+    --spacing-5: 25px;
+    --spacing-6: 30px;
+}  
+  
+/* Margin */
+.m-0 { margin: var(--spacing-0); }
+.m-1 { margin: var(--spacing-1); }
+.m-2 { margin: var(--spacing-2); }
+.m-3 { margin: var(--spacing-3); }
+.m-4 { margin: var(--spacing-4); }
+.m-5 { margin: var(--spacing-5); }
+.m-6 { margin: var(--spacing-6); }
+
+.mt-0 { margin-top: var(--spacing-0); }
+.mt-1 { margin-top: var(--spacing-1); }
+.mt-2 { margin-top: var(--spacing-2); }
+.mt-3 { margin-top: var(--spacing-3); }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-5 { margin-top: var(--spacing-5); }
+.mt-6 { margin-top: var(--spacing-6); }
+
+.mb-0 { margin-bottom: var(--spacing-0); }
+.mb-1 { margin-bottom: var(--spacing-1); }
+.mb-2 { margin-bottom: var(--spacing-2); }
+.mb-3 { margin-bottom: var(--spacing-3); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.mb-5 { margin-bottom: var(--spacing-5); }
+.mb-6 { margin-bottom: var(--spacing-6); }
+
+.ml-0 { margin-left: var(--spacing-0); }
+.ml-1 { margin-left: var(--spacing-1); }
+.ml-2 { margin-left: var(--spacing-2); }
+.ml-3 { margin-left: var(--spacing-3); }
+.ml-4 { margin-left: var(--spacing-4); }
+.ml-5 { margin-left: var(--spacing-5); }
+.ml-6 { margin-left: var(--spacing-6); }
+
+.mr-0 { margin-right: var(--spacing-0); }
+.mr-1 { margin-right: var(--spacing-1); }
+.mr-2 { margin-right: var(--spacing-2); }
+.mr-3 { margin-right: var(--spacing-3); }
+.mr-4 { margin-right: var(--spacing-4); }
+.mr-5 { margin-right: var(--spacing-5); }
+.mr-6 { margin-right: var(--spacing-6); }
+
+.my-0 { margin-top: var(--spacing-0); margin-bottom: var(--spacing-0);}
+.my-1 { margin-top: var(--spacing-1); margin-bottom: var(--spacing-1);}
+.my-2 { margin-top: var(--spacing-2); margin-bottom: var(--spacing-2);}
+.my-3 { margin-top: var(--spacing-3); margin-bottom: var(--spacing-3);}
+.my-4 { margin-top: var(--spacing-4); margin-bottom: var(--spacing-4);}
+.my-5 { margin-top: var(--spacing-5); margin-bottom: var(--spacing-5);}
+.my-6 { margin-top: var(--spacing-6); margin-bottom: var(--spacing-6);}
+
+.mx-0 { margin-left: var(--spacing-0); margin-right: var(--spacing-0);}
+.mx-1 { margin-left: var(--spacing-1); margin-right: var(--spacing-1);}
+.mx-2 { margin-left: var(--spacing-2); margin-right: var(--spacing-2);}
+.mx-3 { margin-left: var(--spacing-3); margin-right: var(--spacing-3);}
+.mx-4 { margin-left: var(--spacing-4); margin-right: var(--spacing-4);}
+.mx-5 { margin-left: var(--spacing-5); margin-right: var(--spacing-5);}
+.mx-6 { margin-left: var(--spacing-6); margin-right: var(--spacing-6);}
+
+/* Padding */
+.p-0 { padding: var(--spacing-0); }
+.p-1 { padding: var(--spacing-1); }
+.p-2 { padding: var(--spacing-2); }
+.p-3 { padding: var(--spacing-3); }
+.p-4 { padding: var(--spacing-4); }
+.p-5 { padding: var(--spacing-5); }
+.p-6 { padding: var(--spacing-6); }
+
+.pt-0 { padding-top: var(--spacing-0); }
+.pt-1 { padding-top: var(--spacing-1); }
+.pt-2 { padding-top: var(--spacing-2); }
+.pt-3 { padding-top: var(--spacing-3); }
+.pt-4 { padding-top: var(--spacing-4); }
+.pt-5 { padding-top: var(--spacing-5); }
+.pt-6 { padding-top: var(--spacing-6); }
+
+.pb-0 { padding-bottom: var(--spacing-0); }
+.pb-1 { padding-bottom: var(--spacing-1); }
+.pb-2 { padding-bottom: var(--spacing-2); }
+.pb-3 { padding-bottom: var(--spacing-3); }
+.pb-4 { padding-bottom: var(--spacing-4); }
+.pb-5 { padding-bottom: var(--spacing-5); }
+.pb-6 { padding-bottom: var(--spacing-6); }
+
+.pl-0 { padding-left: var(--spacing-0); }
+.pl-1 { padding-left: var(--spacing-1); }
+.pl-2 { padding-left: var(--spacing-2); }
+.pl-3 { padding-left: var(--spacing-3); }
+.pl-4 { padding-left: var(--spacing-4); }
+.pl-5 { padding-left: var(--spacing-5); }
+.pl-6 { padding-left: var(--spacing-6); }
+
+.pr-0 { padding-right: var(--spacing-0); }
+.pr-1 { padding-right: var(--spacing-1); }
+.pr-2 { padding-right: var(--spacing-2); }
+.pr-3 { padding-right: var(--spacing-3); }
+.pr-4 { padding-right: var(--spacing-4); }
+.pr-5 { padding-right: var(--spacing-5); }
+.pr-6 { padding-right: var(--spacing-6); }
+
+.py-0 { padding-top: var(--spacing-0); padding-bottom: var(--spacing-0);}
+.py-1 { padding-top: var(--spacing-1); padding-bottom: var(--spacing-1);}
+.py-2 { padding-top: var(--spacing-2); padding-bottom: var(--spacing-2);}
+.py-3 { padding-top: var(--spacing-3); padding-bottom: var(--spacing-3);}
+.py-4 { padding-top: var(--spacing-4); padding-bottom: var(--spacing-4);}
+.py-5 { padding-top: var(--spacing-5); padding-bottom: var(--spacing-5);}
+.py-6 { padding-top: var(--spacing-6); padding-bottom: var(--spacing-6);}
+
+.px-0 { padding-left: var(--spacing-0); padding-right: var(--spacing-0);}
+.px-1 { padding-left: var(--spacing-1); padding-right: var(--spacing-1);}
+.px-2 { padding-left: var(--spacing-2); padding-right: var(--spacing-2);}
+.px-3 { padding-left: var(--spacing-3); padding-right: var(--spacing-3);}
+.px-4 { padding-left: var(--spacing-4); padding-right: var(--spacing-4);}
+.px-5 { padding-left: var(--spacing-5); padding-right: var(--spacing-5);}
+.px-6 { padding-left: var(--spacing-6); padding-right: var(--spacing-6);}
+
+/* Background Color */
+.bg-default{background-color: var(--color-default);}
+.bg-primary{background-color: var(--color-primary);}
+.bg-secondary{background-color: var(--color-secondary);}
+.bg-success{background-color: var(--color-success);}
+.bg-info{background-color: var(--color-info);}
+.bg-cobre{background-color: var(--color-cobre);}
+.bg-black{background-color: var(--color-black);}
+
+.btn {
+    display: inline-block;
+    padding: 0.719rem 1.563rem;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary, .light.btn-primary:hover {
+    color: var(--color-default);
+    background-color: var(--color-primary);
+    border-color:  var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.btn-secondary, .light.btn-secondary:hover {
+    color: var(--color-default);
+    background-color: var(--color-secondary);
+    border-color:  var(--color-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-secondary-dark);
+    border-color:  var(--color-secondary-dark);
+}
+
+.btn-success, .light.btn-success:hover {
+    color: var(--color-default);
+    background-color: var(--color-success);
+    border-color:  var(--color-success);
+}
+
+.btn-success:hover {
+    background-color: var(--color-success-dark);
+    border-color:  var(--color-success-dark);
+}
+
+.btn-info, .light.btn-info:hover {
+    color: var(--color-default);
+    background-color: var(--color-info);
+    border-color:  var(--color-info);
+}
+
+.btn-info:hover {
+    background-color: var(--color-info-dark);
+    border-color:  var(--color-info-dark);
+}
+
+.btn-warning, .light.btn-warning:hover {
+    color: var(--color-default);
+    background-color: var(--color-warning);
+    border-color:  var(--color-warning);
+}
+
+.btn-warning:hover {
+    color: var(--color-default);
+    background-color: var(--color-warning-dark);
+    border-color:  var(--color-warning-dark);
+}
+
+
+.btn-danger, .light.btn-danger:hover {
+    color: var(--color-default);
+    background-color: var(--color-danger);
+    border-color:  var(--color-danger);
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger-dark);
+    border-color:  var(--color-danger-dark);
+}
+
+.btn-purple, .light.btn-purple:hover {
+    color: var(--color-default);
+    background-color: var(--color-purple);
+    border-color:  var(--color-purple);
+}
+
+.btn-purple:hover {
+    background-color: var(--color-purple-dark);
+    border-color:  var(--color-purple-dark);
+}
+
+.btn-orange, .light.btn-orange:hover {
+    color: var(--color-default);
+    background-color: var(--color-orange);
+    border-color:  var(--color-orange);
+}
+
+.btn-orange:hover {
+    background-color: var(--color-orange-dark);
+    border-color:  var(--color-orange-dark);
+}
+
+.btn-indigo, .light.btn-indigo:hover {
+    color: var(--color-default);
+    background-color: var(--color-indigo);
+    border-color:  var(--color-indigo);
+}
+
+.btn-indigo:hover {
+    background-color:var(--color-indigo-dark);
+    border-color: var(--color-indigo-dark);
+}
+
+.btn-outline-primary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+  
+.btn-outline-primary:hover {
+    color: var(--color-default);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-outline-secondary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-info {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-warning {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-danger {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-light {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-dark {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-purple {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-orange {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.btn-outline-indigo {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+}
+
+.light.btn-primary {
+    color: var(--color-primary);
+    background-color: rgba(var(--color-primary-rgb), 0.2);
+    border-color: transparent;
+}
+
+.light.btn-secondary {
+    color: var(--color-secondary);
+    background-color: rgba(var(--color-secondary-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-success {
+    color: var(--color-success);
+    background-color: rgba(var(--color-success-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-info {
+    color: var(--color-info);
+    background-color: rgba(var(--color-info-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-warning {
+    color: var(--color-warning);
+    background-color: rgba(var(--color-warning-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-danger {
+    color: var(--color-danger);
+    background-color: rgba(var(--color-danger-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-purple {
+    color: var(--color-purple);
+    background-color: rgba(var(--color-purple-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-orange {
+    color: var(--color-orange);
+    background-color: rgba(var(--color-orange-rgb), 0.2);
+    border-color: transparent;
+}
+  
+.light.btn-indigo {
+    color: var(--color-indigo);
+    background-color: rgba(var(--color-indigo-rgb), 0.2);
+    border-color: transparent;
+}
+
