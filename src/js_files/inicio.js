@@ -7,7 +7,7 @@ let gastos = [
 ];
 
 const listaGastos = document.getElementById('listaGastos');
-const form = document.getElementById('nuevoGastoForm');
+//const form = document.getElementById('nuevoGastoForm');
 const descripcionInput = document.getElementById('descripcion');
 const montoInput = document.getElementById('monto');
 

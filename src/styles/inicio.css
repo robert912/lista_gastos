@@ -1,0 +1,38 @@
+#listaGastos li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gasto-info {
+    flex-grow: 1;
+}
+
+.gasto-acciones {
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    #listaGastos li {
+        display: block; /* Cambia a disposición vertical */
+        align-items: flex-start; /* Alinea los elementos al inicio */
+    }
+
+    .gasto-info, .gasto-acciones {
+        width: 100%; /* Los elementos ocuparán todo el ancho */
+    }
+}
+
+.btn-editar, .btn-eliminar {
+    padding: 5px 10px;
+}
+
+.pagado {
+    text-decoration: line-through;
+    color: #6c757d;
+}

@@ -1,0 +1,1 @@
+const ENVIROMENT = 'development';
