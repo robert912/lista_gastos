@@ -6,6 +6,29 @@ let gastos = [
     { id: 5, descripcion: 'Teléfono', monto: 40, pagado: false },
 ];
 
+const token = sessionStorage.getItem('access_token');
+if (!token) {
+    window.location.href = 'login.html';
+}
+function loadPersons() {
+    $.ajax({
+        url: 'http://localhost:5000/gastodelmes/obtener',
+        type: 'GET',
+        data: { id_usuario: 1},
+        headers: {
+            'Authorization': token
+        },
+        success: function(response) {
+            toastr.success('Ha ocurrido nada inesperado', 'Success');
+        },
+        error: function() {
+            toastr.error('Ha ocurrido un error inesperado', 'Error');
+        }
+    });
+}
+
+loadPersons();
+
 const listaGastos = document.getElementById('listaGastos');
 //const form = document.getElementById('nuevoGastoForm');
 const descripcionInput = document.getElementById('descripcion');
