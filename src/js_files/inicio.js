@@ -22,17 +22,19 @@
     }
 
     const listaGastos = document.getElementById('listaGastos');
-    const descripcionInput = document.getElementById('descripcion');
-    const montoInput = document.getElementById('monto');
 
     async function renderizarGastos() {
         gastos = await loadListaMensual();
+
         if (!gastos || !Array.isArray(gastos)) {
             console.error('lista_gastos no es un array válido:', gastos);
             listaGastos.innerHTML = '<li>No hay gastos para mostrar</li>';
             return;
         }
+        gastos.sort((a, b) => a.descripcion.localeCompare(b.descripcion));
         listaGastos.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+
         gastos.forEach(gasto => {
             const li = document.createElement('li');
             li.innerHTML = `
@@ -45,23 +47,32 @@
                     <button class="btn-eliminar btn light btn-danger">Eliminar</button>
                 </div>
             `;
-
-            const checkbox = li.querySelector('input[type="checkbox"]');
-            checkbox.addEventListener('change', () => togglePagado(gasto.id));
-
-            const btnEditar = li.querySelector('.btn-editar');
-            btnEditar.addEventListener('click', () => editarGasto(gasto.id));
-
-            const btnEliminar = li.querySelector('.btn-eliminar');
-            btnEliminar.addEventListener('click', () => eliminarGasto(gasto.id));
-
-            const btnAgregarGasto = document.querySelector('.btn-agregar');
-            btnAgregarGasto.addEventListener('click', () => agregarGasto());
-
-            listaGastos.appendChild(li);
+    
+            li.querySelector('input[type="checkbox"]').addEventListener('change', () => togglePagado(gasto.id));
+            li.querySelector('.btn-editar').addEventListener('click', () => editarGasto(gasto.id));
+            li.querySelector('.btn-eliminar').addEventListener('click', () => eliminarGasto(gasto.id));
+    
+            fragment.appendChild(li);
         });
+    
+        listaGastos.appendChild(fragment);
+        ordenarGastos();
         actualizarResumen();
     }
+
+    function ordenarGastos() {
+        const items = Array.from(listaGastos.children);
+    
+        const noPagados = items.filter(item => !item.querySelector('input[type="checkbox"]').checked);
+        const pagados = items.filter(item => item.querySelector('input[type="checkbox"]').checked);
+    
+        // Reordenar elementos en el DOM
+        listaGastos.innerHTML = '';
+        [...noPagados, ...pagados].forEach(item => listaGastos.appendChild(item));
+    }
+
+    const btnAgregarGasto = document.querySelector('.btn-agregar');
+    btnAgregarGasto.addEventListener('click', () => agregarGasto());
 
     async function agregarGasto() {
         const formValues = await modalGasto();
@@ -184,7 +195,6 @@
     }
 
     renderizarGastos();
-
 
     async function modalGasto(gasto = null){
         const { value: formValues = false } = await Swal.fire({
