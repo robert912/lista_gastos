@@ -90,6 +90,7 @@
             function handleLoginResponse(response) {
                 if (response.success) {
                     sessionStorage.setItem('access_token', response.access_token);
+                    sessionStorage.setItem('idUsuario', response.idUser);
                     var now = new Date();
                     now.setMinutes(now.getMinutes() + tiempo_para_expirar);
                     sessionStorage.setItem('session_expirate', now)

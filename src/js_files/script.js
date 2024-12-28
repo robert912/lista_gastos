@@ -36,7 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function removeScript(url) {
+        const existingScript = document.querySelector(`script[src="${url}"]`);
+        if (existingScript) {
+            existingScript.remove();
+        }
+    }
+
     function loadScript(url) {
+        removeScript(url)
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = url;
