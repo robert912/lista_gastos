@@ -54,6 +54,7 @@
 
     <script>
         $(document).ready(function() {
+            //Login Email and password
             $('#loginForm').on('submit', function(e) {
                 e.preventDefault();
                 var usuario = $('#usuario').val();
@@ -90,7 +91,7 @@
             function handleLoginResponse(response) {
                 if (response.success) {
                     sessionStorage.setItem('access_token', response.access_token);
-                    sessionStorage.setItem('idUsuario', response.idUser);
+                    sessionStorage.setItem('idUsuario', response.data.id);
                     var now = new Date();
                     now.setMinutes(now.getMinutes() + tiempo_para_expirar);
                     sessionStorage.setItem('session_expirate', now)
@@ -102,7 +103,7 @@
 
             if (typeof google !== "undefined") {
                 google.accounts.id.initialize({
-                    client_id: "1012040646527-eehun94ltjsmt0tolmjp31qvgaibe67l.apps.googleusercontent.com",
+                    client_id: "455558882520-mbkd8jsjj3ea5geo0n939khg38m4m2bd.apps.googleusercontent.com",
                     callback: handleCredentialResponse
                 });
 
