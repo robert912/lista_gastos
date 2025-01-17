@@ -1,4 +1,4 @@
-var LOGO_PRESTADOR = null
+var LOGO_USUARIO = null
 var tiempo_para_expirar, URL_BACKEND;
 var URL_SITE = window.location.href;
 

@@ -1,16 +1,24 @@
+let loadPage;
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const menuToggle = document.getElementById('menuToggle');
     const content = document.getElementById('content');
     const menuLinks = document.querySelectorAll('.menu-link');
     const pageTitle = document.querySelector('.page-title');
-
+    const imageUrl = sessionStorage.getItem('avatar')?.trim();
+    if (imageUrl && imageUrl != 'null') {
+        const logoImg = document.querySelector('.logo-img');
+        logoImg.src = imageUrl;
+        logoImg.onload = () => console.log('Imagen cargada correctamente.');
+        logoImg.onerror = () => logoImg.src = 'src/icons/ic_profile.png';
+    }
     menuToggle.addEventListener('click', () => {
         sidebar.classList.toggle('open');
     });
 
     // Función para cargar el contenido de la página
-    async function loadPage(page) {
+    loadPage = async function(page) {
+        if (page === 'salir'){return 0}
         try {
             // Simulamos la carga de contenido
             const response = await fetch(`src/pages/${page}.html`);
@@ -59,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const page = link.getAttribute('data-page');
+            sessionStorage.removeItem('id_gasto_mensual');
             loadPage(page);
 
             // Actualizar clase activa
@@ -83,3 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPage('inicio');
 });
 
+function formatearValorPesos(numero) {
+    var value = numero.toString().replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return value;
+}

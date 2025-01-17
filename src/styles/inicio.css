@@ -1,11 +1,17 @@
-#listaGastos li {
-    background-color: #f9f9f9;
+#listaGastos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#listaGastos th, #listaGastos td {
     border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 8px;
+    text-align: left;
+}
+
+#listaGastos th {
+    background-color: #f2f2f2;
 }
 
 .gasto-info {
@@ -18,9 +24,31 @@
 }
 
 @media (max-width: 768px) {
-    #listaGastos li {
-        display: block; /* Cambia a disposición vertical */
-        align-items: flex-start; /* Alinea los elementos al inicio */
+    #listaGastos thead {
+        display: none;
+    }
+
+    #listaGastos tr {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual ancho */
+        /* gap: 10px; Espacio entre las celdas */
+        margin-bottom: 10px;
+    }
+
+    #listaGastos td {
+        display: block; /* Cada celda es independiente */
+        text-align: left;
+        padding: 10px;
+        background: #fff; /* Opcional: Estilo para celdas individuales */
+        border: 1px solid #ddd;
+    }
+
+    #listaGastos td:nth-child(odd) {
+        font-weight: bold; /* Opcional: Resaltar celdas impares (etiquetas) */
+    }
+
+    #listaGastos td:nth-child(even) {
+        text-align: right; /* Celdas pares alineadas a la derecha (valores) */
     }
 
     .gasto-info, .gasto-acciones {
@@ -28,11 +56,52 @@
     }
 }
 
-.btn-editar, .btn-eliminar {
-    padding: 5px 10px;
-}
-
 .pagado {
     text-decoration: line-through;
     color: #6c757d;
+}
+
+.progress-container {
+    background: #f0f0f0;
+    border-radius: 25px;
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    height: 100%;
+    border-radius: 25px;
+    transition: width 1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0; /* Empieza desde la izquierda */
+    z-index: 1;
+}
+
+.progress-name {
+    color: white;
+    font-weight: 500;
+    z-index: 2;
+    text-shadow: 1px 1px 2px rgba(0,0,0,1.2);
+    position: absolute;
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #9C27B0, #E91E63);
+}
+
+.progress-bar.animated {
+    animation: fillProgress 1.5s ease-in-out;
+}
+
+@keyframes fillProgress {
+    from {
+        width: 0;
+    }
 }

@@ -1,16 +1,21 @@
 (() => {
+    const mesTexto = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
     let gastos = []
 
-    function loadListaMensual() {
+    async function loadListaMensual() {
         return new Promise((resolve, reject) => {
+            let data_mes = { id_usuario: sessionStorage.getItem('idUsuario')};
+            let id_gasto_mensual = sessionStorage.getItem('id_gasto_mensual');
+            if (id_gasto_mensual) { data_mes['id'] = id_gasto_mensual;}
             $.ajax({
                 url: URL_BACKEND + '/gastodelmes/obtener',
                 type: 'GET',
-                data: { id_usuario: sessionStorage.getItem('idUsuario')},
+                data: data_mes,
                 success: function(response) {
                     sessionStorage.setItem('id_gasto_mensual', response.data.id);
                     resolve(response['data']['lista_gasto']);
-                    toastr.success('Datos cargados correctamente', 'Success');
+                    document.querySelector('.mes_texto').textContent = `${mesTexto[response['data']['mes']-1]}  ${response['data']['anio']}`;
+                    //toastr.success('Datos cargados correctamente', 'Success');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error al cargar los datos:', error);
@@ -21,41 +26,35 @@
         });
     }
 
-    const listaGastos = document.getElementById('listaGastos');
+    const listaGastos = document.querySelector('#listaGastos tbody');
 
     async function renderizarGastos() {
         gastos = await loadListaMensual();
 
         if (!gastos || !Array.isArray(gastos)) {
             console.error('lista_gastos no es un array válido:', gastos);
-            listaGastos.innerHTML = '<li>No hay gastos para mostrar</li>';
+            listaGastos.innerHTML = '<tr><td colspan="4">No hay gastos para mostrar</td></tr>';
             return;
         }
         gastos.sort((a, b) => a.descripcion.localeCompare(b.descripcion));
         listaGastos.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-
+        
         gastos.forEach(gasto => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="gasto-info ${gasto.pagado ? 'pagado' : ''}">
-                    <input type="checkbox" id="gasto-${gasto.id}" ${gasto.pagado ? 'checked' : ''}>
-                    <label for="gasto-${gasto.id}">${gasto.descripcion}: $${gasto.monto}</label>
-                </div>
-                <div class="gasto-acciones">
-                    <button class="btn-editar btn light btn-primary">Editar</button>
-                    <button class="btn-eliminar btn light btn-danger">Eliminar</button>
-                </div>
+            const row = listaGastos.insertRow();
+            row.className = `gasto-info ${gasto.pagado ? 'pagado' : ''}`;
+            row.innerHTML = `
+                <td><label>${gasto.descripcion}</label></td>
+                <td>$${formatearValorPesos(gasto.monto)}</td>
+                <td><button class="btn-pagar btn-ico btn light btn-${gasto.pagado ? 'success' : 'purple'}" title='Pagar' id="gasto-${gasto.id}">${gasto.pagado ? 'Pagado <i class="bi bi-check2-circle"></i>' : 'Pendiente'}</button></td>
+                <td class="gasto-acciones"><button class="btn-editar btn-ico btn light btn-primary" title='Editar'><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn-eliminar btn-ico btn light btn-danger"  title='Eliminar'><i class="bi bi-trash"></i></button>
+                </td>
             `;
-    
-            li.querySelector('input[type="checkbox"]').addEventListener('change', () => togglePagado(gasto.id));
-            li.querySelector('.btn-editar').addEventListener('click', () => editarGasto(gasto.id));
-            li.querySelector('.btn-eliminar').addEventListener('click', () => eliminarGasto(gasto.id));
-    
-            fragment.appendChild(li);
+            row.querySelector('.btn-pagar').addEventListener('click', () => togglePagado(gasto.id));
+            row.querySelector('.btn-editar').addEventListener('click', () => editarGasto(gasto.id));
+            row.querySelector('.btn-eliminar').addEventListener('click', () => eliminarGasto(gasto.id));
         });
-    
-        listaGastos.appendChild(fragment);
+
         ordenarGastos();
         actualizarResumen();
     }
@@ -63,10 +62,8 @@
     function ordenarGastos() {
         const items = Array.from(listaGastos.children);
     
-        const noPagados = items.filter(item => !item.querySelector('input[type="checkbox"]').checked);
-        const pagados = items.filter(item => item.querySelector('input[type="checkbox"]').checked);
-    
-        // Reordenar elementos en el DOM
+        const noPagados = items.filter(item => item.querySelector('.btn-pagar')?.textContent.trim() === 'Pendiente');
+        const pagados = items.filter(item => item.querySelector('.btn-pagar')?.textContent.trim() === 'Pagado');
         listaGastos.innerHTML = '';
         [...noPagados, ...pagados].forEach(item => listaGastos.appendChild(item));
     }
@@ -91,7 +88,7 @@
                     async: false,
                     data: nuevoGasto,
                 success: function(response) {
-                    toastr.success('Datos cargados correctamente', 'Success');
+                    toastr.success('Nuevo gasto agregado', 'Agregado');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error al cargar los datos:', error);
@@ -134,7 +131,7 @@
                     async: false,
                     data: editarGasto,
                 success: function(response) {
-                    toastr.success('Datos cargados correctamente', 'Success');
+                    toastr.success('Gasto editado correctamente', 'Editado');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error al cargar los datos:', error);
@@ -172,7 +169,7 @@
                     Swal.fire({
                         title: "Eliminado!",
                         text: "Tu gasto ha sido eliminado.",
-                        icon: "success"
+                        icon: "info"
                     });
                 },
                 error: function(xhr, status, error) {
@@ -188,13 +185,36 @@
         const totalGastos = gastos.reduce((sum, gasto) => sum + gasto.monto, 0);
         const totalPagado = gastos.filter(gasto => gasto.pagado).reduce((sum, gasto) => sum + gasto.monto, 0);
         const pendientePagar = totalGastos - totalPagado;
+        const porcentaje = totalGastos ? (100 * totalPagado) / totalGastos : 0;
 
-        document.getElementById('totalGastos').textContent = totalGastos;
-        document.getElementById('totalPagado').textContent = totalPagado;
-        document.getElementById('pendientePagar').textContent = pendientePagar;
+        document.querySelector('.progress-bar').style.width = `${porcentaje}%`;
+        document.getElementById('totalGastos').textContent = formatearValorPesos(totalGastos);
+        document.getElementById('totalPagado').textContent = formatearValorPesos(totalPagado);
+        document.getElementById('pendientePagar').textContent = formatearValorPesos(pendientePagar);
+        document.getElementById('totalPagadoBar').textContent = formatearValorPesos(totalPagado);
+        const data_mensual = {
+            'id':sessionStorage.getItem('id_gasto_mensual'),
+            'gasto_pagado':totalPagado,
+            'gasto_pendiente':pendientePagar,
+            'gasto_total':totalGastos
+        }
+        ajaxResumen(data_mensual);
     }
 
-    renderizarGastos();
+    function ajaxResumen(data_mensual){
+        $.ajax({
+            url: URL_BACKEND + '/gasto_mensual/actualizar',
+            type: 'PUT',
+            async: false,
+            data: data_mensual,
+        success: function(response) {
+            console.log(response)
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los datos:', error);
+            toastr.error('Ha ocurrido un error inesperado', 'Error');
+        }})
+    }
 
     async function modalGasto(gasto = null){
         const { value: formValues = false } = await Swal.fire({
@@ -202,11 +222,11 @@
             html: `
             <div>
                 <label for="descript">Descripción</label>
-                <input type="text" id="descript" class="swal2-input m-1" required placeholder="Ingresa la descripción" value="${gasto != null ? gasto.descripcion : ""}">
+                <input type="text" id="descript" class="swal2-input m-1" required placeholder="Ingresa la descripción" value="${gasto != null ? gasto.descripcion : ""}" required>
             </div>
             <div>
                 <label for="monto" class="p-lg-4">Monto</label>
-                <input type="number" id="monto" class="swal2-input m-1" required placeholder="Ingresa el monto" value="${gasto != null ? gasto.monto : ""}">
+                <input type="number" id="monto" class="swal2-input m-1" required placeholder="Ingresa el monto" value="${gasto != null ? gasto.monto : ""}" required>
             </div>
             `,
             focusConfirm: false,
@@ -230,4 +250,6 @@
         });
         return formValues;
     }
+
+    renderizarGastos();
 })();
