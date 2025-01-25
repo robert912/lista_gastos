@@ -5,16 +5,16 @@ var URL_SITE = window.location.href;
 if(ENVIROMENT == "development"){
     //URL_LOGIN = "http://localhost:5500/login.html" // LOCALHOST
     URL_LOGIN = `${window.location.origin}/login.html`;
-    tiempo_para_expirar = 720
+    tiempo_para_expirar = 720;
     URL_BACKEND = "http://localhost:5000";
 
 }else if(ENVIROMENT == "testing"){
-    URL_LOGIN = "http://158.170.80.113/login.html";
-    tiempo_para_expirar = 720
-    URL_BACKEND = "http://ec2-18-237-90-12.us-west-2.compute.amazonaws.com:5000";
+    URL_LOGIN = "https://www.trebolapp.cl/login.html";
+    tiempo_para_expirar = 720;
+    URL_BACKEND = "https://api.trebolapp.cl:5000";
     
 }else if(ENVIROMENT == "production"){
-    URL_LOGIN = "https://www.cideusach.cl/login.html"
-    URL_BACKEND = "https://api.cideusach.cl"
-    tiempo_para_expirar = 720
+    URL_LOGIN = "https://www.trebolapp.cl/login.html";
+    URL_BACKEND = "http://ec2-18-237-90-12.us-west-2.compute.amazonaws.com:5000";
+    tiempo_para_expirar = 720;
 }
