@@ -6,15 +6,15 @@ if(ENVIROMENT == "development"){
     //URL_LOGIN = "http://localhost:5500/login.html" // LOCALHOST
     URL_LOGIN = `${window.location.origin}/login.html`;
     tiempo_para_expirar = 720;
-    URL_BACKEND = "http://localhost:5000";
+    URL_BACKEND = "http://localhost:5001";
 
 }else if(ENVIROMENT == "testing"){
     URL_LOGIN = "https://www.trebolapp.cl/login.html";
     tiempo_para_expirar = 720;
-    URL_BACKEND = "https://api.trebolapp.cl";
+    URL_BACKEND = "http://api.trebolapp.cl";
     
 }else if(ENVIROMENT == "production"){
     URL_LOGIN = "https://www.trebolapp.cl/login.html";
-    URL_BACKEND = "http://ec2-18-237-90-12.us-west-2.compute.amazonaws.com:5000";
+    URL_BACKEND = "http://api.trebolapp.cl";
     tiempo_para_expirar = 720;
 }
