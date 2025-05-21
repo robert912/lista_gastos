@@ -15,6 +15,6 @@ if(ENVIROMENT == "development"){
     
 }else if(ENVIROMENT == "production"){
     URL_LOGIN = "https://www.trebolapp.cl/login.html";
-    URL_BACKEND = "http://api.trebolapp.cl";
+    URL_BACKEND = "https://api.trebolapp.cl";
     tiempo_para_expirar = 720;
 }
