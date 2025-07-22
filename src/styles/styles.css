@@ -154,3 +154,26 @@ input {
 .btn-ico {
     padding: 5px 10px;
 }
+
+.hogar-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 16px;
+    margin: 12px 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: white;
+    position: relative;
+    overflow: hidden;
+}
+.hogar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-color: #d0d0d0;
+}
+.hogar-card.selected {
+    background: linear-gradient(135deg, #f5f9ff 0%, #e1efff 100%);
+    box-shadow: 0 4px 14px rgba(74, 144, 226, 0.2);
+    animation: gentle-pulse 2s infinite alternate;
+}

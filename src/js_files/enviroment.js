@@ -1,1 +1,1 @@
-const ENVIROMENT = 'production';
+const ENVIROMENT = 'development';

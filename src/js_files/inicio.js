@@ -2,11 +2,36 @@
     const mesTexto = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
     let gastos = []
 
+    // async function loadListaHogar() {
+    //     return new Promise((resolve, reject) => {
+    //         let data_user = { id_usuario: sessionStorage.getItem('idUsuario')};
+    //         //let id_gasto_mensual = sessionStorage.getItem('id_hogar');
+    //         //if (id_gasto_mensual) { data_user['id'] = id_gasto_mensual;}
+    //         $.ajax({
+    //             url: URL_BACKEND + '/hogar/obtener',
+    //             type: 'GET',
+    //             data: data_user,
+    //             success: function(response) {
+    //                 console.log(response)
+    //                 sessionStorage.setItem('id_hogar', response.data.id);
+
+    //                 //toastr.success('Datos cargados correctamente', 'Success');
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 console.error('Error al cargar los datos:', error);
+    //                 reject(error);
+    //                 toastr.error('Ha ocurrido un error inesperado', 'Error');
+    //             }
+    //         });
+    //     });
+    // }
+
+
     async function loadListaMensual() {
         return new Promise((resolve, reject) => {
-            let data_mes = { id_usuario: sessionStorage.getItem('idUsuario')};
-            let id_gasto_mensual = sessionStorage.getItem('id_gasto_mensual');
-            if (id_gasto_mensual) { data_mes['id'] = id_gasto_mensual;}
+            let data_mes = { id_hogar: sessionStorage.getItem('id_hogar')};
+            //let id_gasto_mensual = sessionStorage.getItem('id_gasto_mensual');
+            //if (id_gasto_mensual) { data_mes['id'] = id_gasto_mensual;}
             $.ajax({
                 url: URL_BACKEND + '/gastodelmes/obtener',
                 type: 'GET',
@@ -29,6 +54,8 @@
     const listaGastos = document.querySelector('#listaGastos tbody');
 
     async function renderizarGastos() {
+        home = await loadListaHogar();
+        console.log(home)
         gastos = await loadListaMensual();
 
         if (!gastos || !Array.isArray(gastos)) {
@@ -74,11 +101,13 @@
     async function agregarGasto() {
         const formValues = await modalGasto();
         if (formValues) {
-            const descripcion = formValues.descripcion;
+            const nombre = formValues.nombre;
+            const descripcion = formValues.observacion;
             const monto = formValues.monto;
-            if (descripcion && monto) {
+            if (nombre && monto) {
                 const nuevoGasto = {
                     id_gasto_mensual: sessionStorage.getItem('id_gasto_mensual'),
+                    nombre,
                     descripcion,
                     monto
                 };
@@ -221,12 +250,16 @@
             title: gasto != null ? "Editar Gasto" :"Agregar Nuevo Gasto",
             html: `
             <div>
-                <label for="descript">Descripción</label>
-                <input type="text" id="descript" class="swal2-input m-1" required placeholder="Ingresa la descripción" value="${gasto != null ? gasto.descripcion : ""}" required>
+                <label for="nombre_cuenta" class="p-lg-3">Nombre</label>
+                <input type="text" id="nombre_cuenta" class="swal2-input m-1" required placeholder="Nombre de la cuenta" value="${gasto != null ? gasto.nombre : ""}" required>
             </div>
             <div>
                 <label for="monto" class="p-lg-4">Monto</label>
                 <input type="number" id="monto" class="swal2-input m-1" required placeholder="Ingresa el monto" value="${gasto != null ? gasto.monto : ""}" required>
+            </div>
+            <div>
+                <label for="descript">Observación</label>
+                <input type="text" id="descript" class="swal2-input m-1" placeholder="Ingresa alguna observación" value="${gasto != null ? gasto.observacion : ""}">
             </div>
             `,
             focusConfirm: false,
@@ -234,22 +267,148 @@
             confirmButtonText: gasto != null ? " Editar ":"Agregar",
             cancelButtonText: "Cancelar",
             preConfirm: () => {
-                const descripcion = document.getElementById("descript").value.trim();
+                const nombre = document.getElementById("nombre_cuenta").value.trim();
+                const observacion = document.getElementById("descript").value.trim();
                 const montoValue = document.getElementById("monto").value;
                 const monto = parseFloat(montoValue);
-                if (!descripcion) {
-                    Swal.showValidationMessage("La descripción es obligatoria.");
+                if (!nombre) {
+                    Swal.showValidationMessage("El Nombre es obligatorio.");
                     return false;
                 }
                 if (!montoValue || isNaN(monto) || monto <= 0) {
                     Swal.showValidationMessage("El monto debe ser un número válido mayor a 0.");
                     return false;
                 }
-                return { descripcion, monto };
+                return { nombre, observacion, monto };
             },
         });
         return formValues;
     }
+
+    async function loadListaHogar() {
+        return new Promise((resolve, reject) => {
+            let data_user = { id_usuario: sessionStorage.getItem('idUsuario') };
+            let data_hogar = sessionStorage.getItem('data_hogar');
+            if (data_hogar) { data_hogar['id'] = data_hogar;}
+            $.ajax({
+                url: URL_BACKEND + '/hogar/obtener',
+                type: 'GET',
+                data: data_user,
+                success: async function(response) {
+                    console.log(response);
+
+                    if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+                        // Generar tarjetas HTML
+                        let cardsHtml = `
+                            <div id="hogarCardList" style="max-height: 300px; overflow-y: auto;">
+                        `;
+
+                        response.data.forEach(hogarItem => {
+                            const datos = hogarItem.datos_hogar[0];
+                            const id = datos.id;
+                            const nombre = datos.nombre;
+                            const rol = hogarItem.rol;
+
+                            cardsHtml += `
+                                <div class="hogar-card" data-id="${id}" data-nombre="${nombre}">
+                                    <h4 style="margin-bottom: 5px;">${nombre}</h4>
+                                    <p><strong>Rol:</strong> ${rol}</p>
+                                </div>
+                            `;
+                        });
+
+                        cardsHtml += `</div>`;
+
+                        // Mostrar modal con cards
+                        await Swal.fire({
+                            title: 'Selecciona un hogar',
+                            html: cardsHtml,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            didOpen: () => {
+                                const cards = document.querySelectorAll('.hogar-card');
+                                cards.forEach(card => {
+                                    card.addEventListener('mouseenter', () => {
+                                        card.classList.add('hovered');
+                                    });
+                                    card.addEventListener('mouseleave', () => {
+                                        card.classList.remove('hovered');
+                                    });
+                                    card.addEventListener('click', () => {
+                                        // Remover selección anterior
+                                        cards.forEach(c => c.classList.remove('selected'));
+                                        // Aplicar selección actual
+                                        card.classList.add('selected');
+
+                                        const id = card.getAttribute('data-id');
+                                        const nombre = card.getAttribute('data-nombre');
+
+                                        sessionStorage.setItem('id_hogar', id);
+                                        Swal.close();
+                                        toastr.success(`Hogar "${nombre}" seleccionado`);
+                                        resolve({ id, nombre });
+                                    });
+                                });
+                            }
+                        });
+
+                    } else {
+                        // No hay hogares, pedir nombre
+                        const { value: nombre } = await Swal.fire({
+                            title: 'Crear hogar',
+                            text: 'Por favor, ingresa el nombre de tu hogar',
+                            input: 'text',
+                            inputPlaceholder: 'Ej: Casa Central',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonText: 'Guardar',
+                            showCancelButton: false,
+                            inputValidator: (value) => {
+                                if (!value) return 'Debes ingresar un nombre';
+                            }
+                        });
+
+                        if (nombre) {
+                            $.ajax({
+                                url: URL_BACKEND + '/hogar/crear',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    nombre: nombre,
+                                    id_usuario: sessionStorage.getItem('idUsuario')
+                                }),
+                                success: function(res) {
+                                    if (res.success && res.data) {
+                                        sessionStorage.setItem('id_hogar', res.data.id);
+                                        //sessionStorage.setItem('data_hogar', res.data);
+                                        toastr.success('Hogar creado exitosamente');
+                                        loadListaHogar().then(resolve);
+                                    } else {
+                                        Swal.fire('Error', 'No se pudo crear el hogar', 'error');
+                                        reject(res.message || 'Error al crear hogar');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire('Error', 'Ocurrió un error al crear el hogar', 'error');
+                                    reject(error);
+                                }
+                            });
+                        } else {
+                            reject('No se ingresó nombre del hogar');
+                            location.reload();
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar los datos:', error);
+                    toastr.error('Ha ocurrido un error inesperado', 'Error');
+                    reject(error);
+                }
+            });
+        });
+    }
+
 
     renderizarGastos();
 })();
