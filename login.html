@@ -95,6 +95,7 @@
                 if (response.success) {
                     sessionStorage.setItem('access_token', response.access_token);
                     sessionStorage.setItem('idUsuario', response.data.id);
+                    sessionStorage.setItem('nombre_user', response.data.nombre);
                     sessionStorage.setItem('avatar', response.data.avatar);
                     var now = new Date();
                     now.setMinutes(now.getMinutes() + tiempo_para_expirar);
