@@ -9,13 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css">
     <link rel="stylesheet" href="src/styles/login.css">
-    <!-- Google Sign-In API -->
+    <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-		var VERSION_JS = 2;
-		document.write("<script type='text/javascript' src='src/js_files/enviroment.js?v=" + VERSION_JS + "'><\/script>");
-		document.write("<script type='text/javascript' src='src/js_files/config.js?v=" + VERSION_JS + "'><\/script>");
-	</script>
+        var VERSION_JS = 2;
+        document.write("<script type='text/javascript' src='src/js_files/enviroment.js?v=" + VERSION_JS + "'><\/script>");
+        document.write("<script type='text/javascript' src='src/js_files/config.js?v=" + VERSION_JS + "'><\/script>");
+    </script>
 </head>
 <body>
     <div class="container">
@@ -28,29 +28,30 @@
                         </div>
                         <h5 class="card-title text-center">Iniciar Sesión</h5>
                         <form class="form-signin" id="loginForm">
-                            <div class="form-label-group">
+                            <div class="form-label-group mb-3">
                                 <input type="email" id="usuario" class="form-control" placeholder="example@email.com" required autofocus>
                                 <label for="usuario">Correo Electrónico</label>
                             </div>
-
-                            <div class="form-label-group">
+                            <div class="form-label-group mb-3">
                                 <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
                                 <label for="password">Contraseña</label>
                             </div>
-
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Recordar contraseña</label>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                <label class="form-check-label" for="customCheck1">Recordar contraseña</label>
                             </div>
                             <button class="btn btn-lg btn-primary btn-block text-uppercase w-100" type="submit">Iniciar sesión</button>
                         </form>
-                        <div class="g_id_signin mt-4" data-type="standard"></div>
+                        <div class="mt-4 text-center">
+                            <div id="googleBtn"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- JS Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,19 +107,23 @@
                 }
             }
 
-            if (typeof google !== "undefined") {
-                google.accounts.id.initialize({
-                    client_id: "455558882520-mbkd8jsjj3ea5geo0n939khg38m4m2bd.apps.googleusercontent.com",
-                    callback: handleCredentialResponse
-                });
-
-                google.accounts.id.renderButton(
-                    document.querySelector(".g_id_signin"), 
-                    { theme: "outline", size: "large" }
-                );
-            } else {
-                console.info("Google script not loaded correctly.");
+            // Google Identity Services: render siempre el botón
+            function renderGoogleButton() {
+                if (window.google && google.accounts && google.accounts.id) {
+                    google.accounts.id.initialize({
+                        client_id: "455558882520-mbkd8jsjj3ea5geo0n939khg38m4m2bd.apps.googleusercontent.com",
+                        callback: handleCredentialResponse
+                    });
+                    google.accounts.id.renderButton(
+                        document.getElementById("googleBtn"),
+                        { theme: "outline", size: "large", text: "continue_with", shape: "pill" }
+                    );
+                } else {
+                    // Si Google aún no está disponible, reintenta hasta que cargue
+                    setTimeout(renderGoogleButton, 300);
+                }
             }
+            renderGoogleButton();
         });
     </script>
 </body>
