@@ -2,31 +2,6 @@
     const mesTexto = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
     let gastos = []
 
-    // async function loadListaHogar() {
-    //     return new Promise((resolve, reject) => {
-    //         let data_user = { id_usuario: sessionStorage.getItem('idUsuario')};
-    //         //let id_gasto_mensual = sessionStorage.getItem('id_hogar');
-    //         //if (id_gasto_mensual) { data_user['id'] = id_gasto_mensual;}
-    //         $.ajax({
-    //             url: URL_BACKEND + '/hogar/obtener',
-    //             type: 'GET',
-    //             data: data_user,
-    //             success: function(response) {
-    //                 console.log(response)
-    //                 sessionStorage.setItem('id_hogar', response.data.id);
-
-    //                 //toastr.success('Datos cargados correctamente', 'Success');
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.error('Error al cargar los datos:', error);
-    //                 reject(error);
-    //                 toastr.error('Ha ocurrido un error inesperado', 'Error');
-    //             }
-    //         });
-    //     });
-    // }
-
-
     async function loadListaMensual() {
         return new Promise((resolve, reject) => {
             let data_mes = { id_hogar: sessionStorage.getItem('id_hogar')};
@@ -61,17 +36,24 @@
             listaGastos.innerHTML = '<tr><td colspan="4">No hay gastos para mostrar</td></tr>';
             return;
         }
-        gastos.sort((a, b) => a.descripcion.localeCompare(b.descripcion));
+        // Ordena: primero los no pagados, luego los pagados
+        gastos.sort((a, b) => {
+            if (a.pagado === b.pagado) return a.nombre.localeCompare(b.nombre);
+            return a.pagado ? 1 : -1;
+        });
         listaGastos.innerHTML = '';
         
         gastos.forEach(gasto => {
             const row = listaGastos.insertRow();
             row.className = `gasto-info ${gasto.pagado ? 'pagado' : ''}`;
             row.innerHTML = `
-                <td><label>${gasto.descripcion}</label></td>
+                <td><label>${gasto.nombre}</label></td>
                 <td>$${formatearValorPesos(gasto.monto)}</td>
-                <td><button class="btn-pagar btn-ico btn light btn-${gasto.pagado ? 'success' : 'purple'}" title='Pagar' id="gasto-${gasto.id}">${gasto.pagado ? 'Pagado <i class="bi bi-check2-circle"></i>' : 'Pendiente'}</button></td>
-                <td class="gasto-acciones"><button class="btn-editar btn-ico btn light btn-primary" title='Editar'><i class="bi bi-pencil-square"></i></button>
+                <td><label>${gasto.descripcion}</label></td>
+                <td class="gasto-acciones">
+                    <button class="btn-ver btn-ico btn light btn-info"  title='Ver'><i class="bi bi-search"></i></button>
+                    <button class="btn-pagar btn-ico btn light btn-${gasto.pagado ? 'success' : 'purple'}" title=${gasto.pagado ? 'Pagado': 'Pagar'} id="gasto-${gasto.id}">${gasto.pagado ? '<i class="bi bi-check2-circle"></i>' : '<i class="bi bi-currency-dollar"></i>'}</button>
+                    <button class="btn-editar btn-ico btn light btn-primary" title='Editar'><i class="bi bi-pencil-square"></i></button>
                     <button class="btn-eliminar btn-ico btn light btn-danger"  title='Eliminar'><i class="bi bi-trash"></i></button>
                 </td>
             `;
@@ -80,7 +62,7 @@
             row.querySelector('.btn-eliminar').addEventListener('click', () => eliminarGasto(gasto.id));
         });
 
-        ordenarGastos();
+        //ordenarGastos();
         actualizarResumen();
     }
 
@@ -143,12 +125,14 @@
         const gasto = gastos.find(g => g.id === id);
         const formValues = await modalGasto(gasto);
         if (formValues) {
-            const nuevaDescripcion = formValues.descripcion;
+            const nuevoNombre = formValues.nombre;
+            const nuevaDescripcion = formValues.observacion;
             const nuevoMonto = formValues.monto;
             
-            if (nuevaDescripcion !== null && nuevoMonto !== null) {
+            if (nuevoNombre !== null && nuevoMonto !== null) {
                 const editarGasto = {
                     id,
+                    nombre: nuevoNombre,
                     descripcion: nuevaDescripcion,
                     monto: nuevoMonto
                 };
@@ -257,7 +241,7 @@
             </div>
             <div>
                 <label for="descript">Observación</label>
-                <input type="text" id="descript" class="swal2-input m-1" placeholder="Ingresa alguna observación" value="${gasto != null ? gasto.observacion : ""}">
+                <input type="text" id="descript" class="swal2-input m-1" placeholder="Ingresa alguna observación" value="${gasto != null ? gasto.descripcion : ""}">
             </div>
             `,
             focusConfirm: false,
