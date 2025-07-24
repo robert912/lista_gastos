@@ -4,9 +4,17 @@
     margin-top: 10px;
 }
 
+#listaGastos td label {
+    display: block;
+    max-width: 180px;      /* Ajusta el ancho según tu diseño */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #listaGastos th, #listaGastos td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 6px;
     text-align: left;
 }
 
@@ -14,46 +22,8 @@
     background-color: #f2f2f2;
 }
 
-.gasto-info {
-    flex-grow: 1;
-}
-
 .gasto-acciones {
-    display: flex;
-    gap: 10px;
-}
-
-@media (max-width: 768px) {
-    #listaGastos thead {
-        display: none;
-    }
-
-    #listaGastos tr {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual ancho */
-        /* gap: 10px; Espacio entre las celdas */
-        margin-bottom: 10px;
-    }
-
-    #listaGastos td {
-        display: block; /* Cada celda es independiente */
-        text-align: left;
-        padding: 10px;
-        background: #fff; /* Opcional: Estilo para celdas individuales */
-        border: 1px solid #ddd;
-    }
-
-    #listaGastos td:nth-child(odd) {
-        font-weight: bold; /* Opcional: Resaltar celdas impares (etiquetas) */
-    }
-
-    #listaGastos td:nth-child(even) {
-        text-align: right; /* Celdas pares alineadas a la derecha (valores) */
-    }
-
-    .gasto-info, .gasto-acciones {
-        width: 100%; /* Los elementos ocuparán todo el ancho */
-    }
+    white-space: nowrap;
 }
 
 .pagado {

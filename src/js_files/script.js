@@ -5,34 +5,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     const content = document.getElementById('content');
     const menuLinks = document.querySelectorAll('.menu-link');
     const pageTitle = document.querySelector('.page-title');
-    const imageUrl = sessionStorage.getItem('avatar')?.trim();
     const btnListarHogar = document.getElementById('btnListarHogar');
     const nombreUser = document.getElementById('nom_user');
-    const nombreHogar = sessionStorage.getItem('nombre_hogar') || 'Administrador';
-    const nombreUsuario = sessionStorage.getItem('nombre_user') || 'Administrador';
-    btnListarHogar.textContent = nombreHogar;
-    nombreUser.textContent = nombreUsuario;
+    const logoImg = document.querySelector('.logo-img');
     
+    // Utilidad para actualizar nombre hogar y usuario
+    function actualizarNombreHogar() {
+        const nombreHogar = sessionStorage.getItem('nombre_hogar') || 'Administrador';
+        btnListarHogar.textContent = nombreHogar;
+    }
+    function actualizarNombreUsuario() {
+        const nombreUsuario = sessionStorage.getItem('nombre_user') || 'Administrador';
+        nombreUser.textContent = nombreUsuario;
+    }
+
+    actualizarNombreHogar();
+    actualizarNombreUsuario();
 
     btnListarHogar.addEventListener('click', function() {
         loadListaHogar();
     });
 
+    const imageUrl = sessionStorage.getItem('avatar')?.trim();
     if (imageUrl && imageUrl != 'null') {
-        const logoImg = document.querySelector('.logo-img');
         logoImg.src = imageUrl;
         logoImg.onload = () => console.log('Imagen cargada correctamente.');
         logoImg.onerror = () => logoImg.src = 'src/icons/ic_profile.png';
     }
+
     menuToggle.addEventListener('click', () => {
         sidebar.classList.toggle('open');
     });
+
+    // Cerrar sidebar al hacer clic fuera (responsive)
     document.addEventListener('click', function(event) {
-        // Solo en modo móvil
         if (window.innerWidth <= 768) {
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.getElementById('menuToggle');
-            // Si el sidebar está abierto y el clic NO fue dentro del sidebar ni en el botón de menú
             if (
                 sidebar.classList.contains('open') &&
                 !sidebar.contains(event.target) &&
@@ -53,22 +60,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             // Simulamos la carga de contenido
             const response = await fetch(`src/pages/${page}.html`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const html = await response.text();
-                content.innerHTML = html;
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const html = await response.text();
+            content.innerHTML = html;
             pageTitle.textContent = page.charAt(0).toUpperCase() + page.slice(1);
             const scriptUrl = `src/js_files/${page}.js?v=${VERSION_JS}`;
-            console.log(scriptUrl)
             loadScript(scriptUrl)
-                .then(() => {
-                    console.log('Script de inicio cargado');
-                    // Aquí puedes inicializar funciones de inicio.js si es necesario
-                })
-                .catch((error) => {
-                    console.error('Error al cargar el script de inicio:', error);
-                })
+                .then(() => console.log('Script de inicio cargado'))
+                .catch((error) =>console.error('Error al cargar el script de inicio:', error));
         } catch (e) {
             console.error('Error al cargar la página:', e);
             content.innerHTML = '<p>Error al cargar el contenido. Por favor, intenta de nuevo.</p>';
@@ -152,7 +151,9 @@ async function obtenerHogares() {
 
 async function mostrarModalHogares(hogares) {
     return new Promise((resolve) => {
-        let cardsHtml = `<div id="hogarCardList" style="max-height: 300px; overflow-y: auto;">`;
+        let cardsHtml = `
+            <div id="hogarCardList" style="max-height: 300px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+        `;
 
         hogares.forEach(hogarItem => {
             const datos = hogarItem.datos_hogar[0];
@@ -161,26 +162,39 @@ async function mostrarModalHogares(hogares) {
             const rol = hogarItem.rol;
 
             cardsHtml += `
-                <div class="hogar-card" data-id="${id}" data-nombre="${nombre}">
-                    <h4 style="margin-bottom: 5px;">${nombre}</h4>
-                    <p><strong>Rol:</strong> ${rol}</p>
+                <div class="hogar-card border rounded shadow-sm p-3 text-center" data-id="${id}" data-nombre="${nombre}">
+                    <div class="mb-2">
+                        <i class="bi bi-house-door-fill fs-2 text-primary"></i>
+                    </div>
+                    <h5 class="mb-1 text-dark">${nombre}</h5>
+                    <span class="badge bg-info mb-2">${rol}</span>
                 </div>
             `;
         });
 
-        cardsHtml += `</div>`;
+        cardsHtml += `</div>
+            <div class="mt-3 text-center">
+                <button id="btnAgregarHogar" class="btn btn-outline-success btn-sm">
+                    <i class="bi bi-plus-circle"></i> Agregar hogar
+                </button>
+            </div>
+        `;
 
         Swal.fire({
-            title: 'Selecciona un hogar',
+            title: '<span class="fw-bold">Selecciona un hogar</span>',
             html: cardsHtml,
             showConfirmButton: false,
             allowOutsideClick: false,
             allowEscapeKey: false,
+            customClass: {
+                popup: 'swal2-hogar-modal'
+            },
             didOpen: () => {
+                // Selección de hogar
                 const cards = document.querySelectorAll('.hogar-card');
                 cards.forEach(card => {
-                    card.addEventListener('mouseenter', () => card.classList.add('hovered'));
-                    card.addEventListener('mouseleave', () => card.classList.remove('hovered'));
+                    card.addEventListener('mouseenter', () => card.classList.add('shadow-lg'));
+                    card.addEventListener('mouseleave', () => card.classList.remove('shadow-lg'));
                     card.addEventListener('click', () => {
                         cards.forEach(c => c.classList.remove('selected'));
                         card.classList.add('selected');
@@ -188,7 +202,6 @@ async function mostrarModalHogares(hogares) {
                         const id = card.getAttribute('data-id');
                         const nombre = card.getAttribute('data-nombre');
 
-                        //sessionStorage.removeItem('id_gasto_mensual');
                         sessionStorage.setItem('id_hogar', id);
                         sessionStorage.setItem('nombre_hogar', nombre);
                         Swal.close();
@@ -197,8 +210,33 @@ async function mostrarModalHogares(hogares) {
                         }
                         toastr.success(`Hogar "${nombre}" seleccionado`);
                         btnListarHogar.textContent = nombre;
+                        sessionStorage.removeItem('id_gasto_mensual');
                         resolve({ id, nombre });
                     });
+                });
+
+                // Botón para agregar hogar
+                document.getElementById('btnAgregarHogar').addEventListener('click', async () => {
+                    const { value: nombre } = await Swal.fire({
+                        title: 'Crear hogar',
+                        text: 'Por favor, ingresa el nombre de tu hogar',
+                        input: 'text',
+                        inputPlaceholder: 'Ej: Casa Central',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonText: 'Guardar',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) return 'Debes ingresar un nombre';
+                        }
+                    });
+                    if (nombre) {
+                        await crearHogar(nombre);
+                        Swal.close();
+                        // Recargar la selección de hogares
+                        await mostrarModalHogares(await obtenerHogares());
+                        resolve();
+                    }
                 });
             }
         });

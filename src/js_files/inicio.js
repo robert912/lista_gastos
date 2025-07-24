@@ -5,8 +5,8 @@
     async function loadListaMensual() {
         return new Promise((resolve, reject) => {
             let data_mes = { id_hogar: sessionStorage.getItem('id_hogar')};
-            //let id_gasto_mensual = sessionStorage.getItem('id_gasto_mensual');
-            //if (id_gasto_mensual) { data_mes['id'] = id_gasto_mensual;}
+            let id_gasto_mensual = sessionStorage.getItem('id_gasto_mensual');
+            if (id_gasto_mensual) { data_mes['id'] = id_gasto_mensual;}
             $.ajax({
                 url: URL_BACKEND + '/gastodelmes/obtener',
                 type: 'GET',
@@ -14,7 +14,7 @@
                 success: function(response) {
                     sessionStorage.setItem('id_gasto_mensual', response.data.id);
                     resolve(response['data']['lista_gasto']);
-                    document.querySelector('.mes_texto').textContent = `${mesTexto[response['data']['mes']-1]}  ${response['data']['anio']}`;
+                    document.getElementById('page-title-header').innerHTML = `<i class="bi bi-cash-stack"></i> Lista de Pagos <span class="mes_texto text-primary">${mesTexto[response['data']['mes']-1]}  ${response['data']['anio']}</span>`;
                     //toastr.success('Datos cargados correctamente', 'Success');
                 },
                 error: function(xhr, status, error) {
@@ -45,13 +45,13 @@
         
         gastos.forEach(gasto => {
             const row = listaGastos.insertRow();
-            row.className = `gasto-info ${gasto.pagado ? 'pagado' : ''}`;
+            row.className = `gasto-info${gasto.pagado ? ' table-success' : ''}`;
             row.innerHTML = `
                 <td><label>${gasto.nombre}</label></td>
                 <td>$${formatearValorPesos(gasto.monto)}</td>
                 <td><label>${gasto.descripcion}</label></td>
                 <td class="gasto-acciones">
-                    <button class="btn-ver btn-ico btn light btn-info"  title='Ver'><i class="bi bi-search"></i></button>
+                    <button class="btn-ver btn-ico btn light btn-info" title='Ver'><i class="bi bi-search"></i></button>
                     <button class="btn-pagar btn-ico btn light btn-${gasto.pagado ? 'success' : 'purple'}" title=${gasto.pagado ? 'Pagado': 'Pagar'} id="gasto-${gasto.id}">${gasto.pagado ? '<i class="bi bi-check2-circle"></i>' : '<i class="bi bi-currency-dollar"></i>'}</button>
                     <button class="btn-editar btn-ico btn light btn-primary" title='Editar'><i class="bi bi-pencil-square"></i></button>
                     <button class="btn-eliminar btn-ico btn light btn-danger"  title='Eliminar'><i class="bi bi-trash"></i></button>
@@ -64,15 +64,6 @@
 
         //ordenarGastos();
         actualizarResumen();
-    }
-
-    function ordenarGastos() {
-        const items = Array.from(listaGastos.children);
-    
-        const noPagados = items.filter(item => item.querySelector('.btn-pagar')?.textContent.trim() === 'Pendiente');
-        const pagados = items.filter(item => item.querySelector('.btn-pagar')?.textContent.trim() === 'Pagado');
-        listaGastos.innerHTML = '';
-        [...noPagados, ...pagados].forEach(item => listaGastos.appendChild(item));
     }
 
     const btnAgregarGasto = document.querySelector('.btn-agregar');
