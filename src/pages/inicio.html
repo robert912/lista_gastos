@@ -49,3 +49,125 @@
         </div>
     </div>
 </div>
+
+<!-- Modal: Agregar Gasto -->
+<div class="modal fade" id="modalGasto" tabindex="-1" aria-labelledby="modalGastoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-sm">
+            <form id="formGasto">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalGastoLabel"><i class="bi bi-plus-circle me-2"></i>Agregar Nuevo
+                        Gasto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nombre_cuenta" placeholder="Nombre" required>
+                        <label for="nombre_cuenta"><i class="bi bi-person-badge me-2"></i>Nombre *</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="monto" placeholder="Monto" required>
+                        <label for="monto"><i class="bi bi-currency-dollar me-2"></i>Monto *</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="descript" placeholder="Observación">
+                        <label for="descript"><i class="bi bi-chat-text me-2"></i>Observación</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="comprobante" placeholder="Comprobante">
+                        <label for="comprobante"><i class="bi bi-receipt me-2"></i>Comprobante</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="categoria" placeholder="Categoría">
+                        <label for="categoria"><i class="bi bi-tags me-2"></i>Categoría</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="pagado">
+                            <option value="0">No</option>
+                            <option value="1">Sí</option>
+                        </select>
+                        <label for="pagado"><i class="bi bi-check-circle me-2"></i>¿Pagado?</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="fecha_vencimiento"
+                            placeholder="Fecha de vencimiento">
+                        <label for="fecha_vencimiento"><i class="bi bi-calendar-event me-2"></i>Fecha de
+                            vencimiento</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                            class="bi bi-x-circle me-1"></i>Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Ver Gasto -->
+<div class="modal fade" id="modalVerGasto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-sm">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="bi bi-eye-fill me-2"></i>Información del Gasto</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p><i class="bi bi-person-badge-fill me-2"></i><strong>Nombre:</strong> <span id="verNombre"></span></p>
+                <p><i class="bi bi-currency-dollar me-2"></i><strong>Monto:</strong> <span id="verMonto"></span></p>
+                <p><i class="bi bi-chat-left-text me-2"></i><strong>Descripción:</strong> <span
+                        id="verDescripcion"></span></p>
+                <p><i class="bi bi-receipt me-2"></i><strong>Comprobante:</strong> <span id="verComprobante"></span></p>
+                <p><i class="bi bi-tags me-2"></i><strong>Categoría:</strong> <span id="verCategoria"></span></p>
+                <p><i class="bi bi-check2-circle me-2"></i><strong>¿Pagado?:</strong> <span id="verPagado"></span></p>
+                <p><i class="bi bi-calendar me-2"></i><strong>Fecha de vencimiento:</strong> <span
+                        id="verFechaVencimiento"></span></p>
+                <p><i class="bi bi-calendar-check me-2"></i><strong>Fecha de pago:</strong> <span
+                        id="verFechaPago"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                        class="bi bi-x-circle me-1"></i>Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Registrar Pago -->
+<div class="modal fade" id="modalPago" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-sm">
+            <form id="formPago">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-cash-coin me-2"></i>Registrar Pago</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="pagoId">
+                    <div class="form-floating">
+                        <input type="datetime-local" id="fecha_pago" class="form-control" required>
+                        <label for="fecha_pago"><i class="bi bi-calendar-check me-2"></i>Fecha y Hora del Pago</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                            class="bi bi-x-circle me-1"></i>Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i
+                            class="bi bi-check2-circle me-1"></i>Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
