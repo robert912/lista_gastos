@@ -60,6 +60,7 @@
             row.innerHTML = `
                 <td><label>${gasto.nombre}</label></td>
                 <td>$${formatearValorPesos(gasto.monto)}</td>
+                <td><label>${gasto.fecha_vencimiento || '-'}</label></td>
                 <td><label>${gasto.descripcion}</label></td>
                 <td class="gasto-acciones">
                     <button class="btn-ver btn-ico btn light btn-info" title='Ver'><i class="bi bi-search"></i></button>
