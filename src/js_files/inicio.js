@@ -119,6 +119,8 @@
 
     // Modal para agregar/editar gasto
     function abrirModalGasto(gasto = null) {
+        const btnGuardar = document.querySelector('#formGasto button[type="submit"]'); 
+        btnGuardar.disabled = false;
         const modal = new bootstrap.Modal(document.getElementById('modalGasto'));
         document.getElementById('formGasto').reset();
         gastoEditando = gasto;
@@ -128,7 +130,7 @@
         document.getElementById('comprobante').parentElement.style.display = gasto ? 'block' : 'none';
         document.getElementById('pagado').parentElement.style.display = gasto ? 'block' : 'none';
         document.getElementById('categoria').parentElement.style.display = gasto ? 'block' : 'none';
-        document.getElementById('fecha_vencimiento').parentElement.style.display = gasto ? 'block' : 'none';
+        //document.getElementById('fecha_vencimiento').parentElement.style.display = gasto ? 'block' : 'none';
 
         if (gasto) {
             document.getElementById('nombre_cuenta').value = gasto.nombre || "";
@@ -210,6 +212,8 @@
     // Evento para agregar/editar gasto desde el modal
     document.getElementById('formGasto').addEventListener('submit', function (e) {
         e.preventDefault();
+        const btnGuardar = this.querySelector('button[type="submit"]');
+        btnGuardar.disabled = true; // 🚫 Bloquea el botón
 
         const nombre = document.getElementById('nombre_cuenta').value.trim();
         const montoValue = document.getElementById('monto').value;
