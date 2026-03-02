@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css">
     <link rel="stylesheet" href="src/styles/login.css">
     <!-- Google Recaptcha Services -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6Le3QSQsAAAAACV22gMOE_URIg7fUQRl5UvVKfGK"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcW13UsAAAAABQnUwed1nrIoTAo7o5lFxPAYhPt"></script>
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
@@ -70,7 +70,7 @@
                     return;
                 }
                 grecaptcha.ready(function () {
-                    grecaptcha.execute('6Le3QSQsAAAAACV22gMOE_URIg7fUQRl5UvVKfGK', { action: 'login' })
+                    grecaptcha.execute('6LcW13UsAAAAABQnUwed1nrIoTAo7o5lFxPAYhPt', { action: 'login' })
                         .then(function (token) {
 
                             makeAjaxRequest('/login', 'POST', {
