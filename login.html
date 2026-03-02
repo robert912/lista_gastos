@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css">
     <link rel="stylesheet" href="src/styles/login.css">
+    <!-- Google Recaptcha Services -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6Le3QSQsAAAAACV22gMOE_URIg7fUQRl5UvVKfGK"></script>
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
@@ -67,7 +69,18 @@
                     toastr.error('Por favor, completa todos los campos.', 'Error');
                     return;
                 }
-                makeAjaxRequest('/login','POST',{ usuario: usuario, password: password },handleLoginResponse);
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6Le3QSQsAAAAACV22gMOE_URIg7fUQRl5UvVKfGK', { action: 'login' })
+                        .then(function (token) {
+
+                            makeAjaxRequest('/login', 'POST', {
+                                usuario: usuario,
+                                password: password,
+                                recaptcha_token: token
+                            }, handleLoginResponse);
+
+                        });
+                });
             });
 
             function handleCredentialResponse(response) {
